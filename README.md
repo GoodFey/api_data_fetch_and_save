@@ -1,7 +1,5 @@
 Бесплатный хостинг ДБ: https://freedb.tech
 
-В .env уже прописан доступ к БД
-
 Доступ к БД:
 
 DB_CONNECTION=mysql
