@@ -21,8 +21,15 @@ class ApiClient
         $params['key'] = $this->apiKey;
         $params['limit'] = 500;
 
-        $response = Http::get("{$this->baseUrl}{$endpoint}", $params);
+        $response = Http::retry(5, 2000, function ($exception, $request) {
+            // Проверяем, является ли ошибка ошибкой 429 (Too Many Requests)
+            return $exception instanceof \Illuminate\Http\Client\RequestException && $exception->getCode() === 429;
+        })->get("{$this->baseUrl}{$endpoint}", $params);
 
-        return $response->json();
+
+        if ($response->successful()) {
+
+            return $response->json();
+        }
     }
 }

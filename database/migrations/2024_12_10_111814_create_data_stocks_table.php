@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::create('data_stocks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('account_id')->constrained('accounts');
             $table->date("date");
             $table->date("last_change_date")->nullable();
             $table->char("supplier_article", 16)->nullable();

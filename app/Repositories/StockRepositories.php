@@ -2,14 +2,22 @@
 
 namespace App\Repositories;
 
+use App\Models\Order;
 use App\Models\Stock;
 
 class StockRepositories
 {
-    public function save(array $incomes): void
+    public function save(array $data, $account, &$countAddedRecord): void
     {
-        foreach ($incomes as $income) {
-            Stock::create($income);
+        foreach ($data as $item) {
+            $item['account_id'] = $account;
+
+            if (Stock::isExist($item)) {
+                continue;
+            }
+            Stock::create($item);
+            $countAddedRecord++;
         }
+        dump("Сохранено записей: {$countAddedRecord}");
     }
 }

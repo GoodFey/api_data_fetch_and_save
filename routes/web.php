@@ -1,17 +1,17 @@
 <?php
 
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\SaleController;
+use App\Http\Controllers\API\IncomeController;
+use App\Http\Controllers\API\OrderController;
+use App\Http\Controllers\API\SaleController;
+use App\Http\Controllers\API\StockController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IncomeController;
-use \App\Http\Controllers\StockController;
 
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/incomes', [IncomeController::class, 'fetchAndStoreIncomes']);
-Route::get('/stocks', [StockController::class, 'fetchAndStoreStocks']);
-Route::get('/sales', [SaleController::class, 'fetchAndStoreSales']);
-Route::get('/orders', [OrderController::class, 'fetchAndStoreOrders']);
+Route::get('/incomes', [IncomeController::class, 'fetchAndStore']);
+Route::get('/stocks', [StockController::class, 'fetchAndStore']);
+Route::get('/sales', [SaleController::class, 'fetchAndStore']);
+Route::get('/orders', [OrderController::class, 'fetchAndStore']);
