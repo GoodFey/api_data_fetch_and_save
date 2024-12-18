@@ -55,10 +55,11 @@ class fetch extends Command implements PromptsForMissingInput
         $dateFrom = select(
             label: 'Выберете день начиная с которого пойдет загрузка.',
             options: [
-                now()->format('Y-m-d') => 'Сегодня',
-                Carbon::yesterday()->format('Y-m-d') => 'Вчера',
-                Carbon::now()->subWeek()->format('Y-m-d') => 'Неделю назад',
-                Carbon::now()->subYear()->format('Y-m-d') => 'Год назад',
+                now()->format('Y-m-d') => 'Today',
+                Carbon::yesterday()->format('Y-m-d') => 'Yesterday',
+                Carbon::now()->subWeek()->format('Y-m-d') => 'Week',
+                Carbon::now()->subMonth()->format('Y-m-d') => 'Month',
+                Carbon::now()->subYear()->format('Y-m-d') => 'Year',
             ],
         );
 
