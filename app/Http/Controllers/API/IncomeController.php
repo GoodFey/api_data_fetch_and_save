@@ -19,10 +19,12 @@ class IncomeController extends Controller
 
     public function fetchAndStore($account, $page = 1, $dateFrom = "2023-10-10", $countAddedRecord = 0)
     {
+        $apiService = "http://89.108.115.241:6969/";
+        $token = "E6kUTYrYwZq2tN4QEtyzsbEBk3ie";
 
         $dateTo = now()->format('Y-m-d');
 
-        $response = $this->incomeService->getIncomes($dateFrom, $dateTo, $page);
+        $response = $this->incomeService->getIncomes($dateFrom, $dateTo, $page, $apiService, $token);
 
         $this->incomeRepository->save($response['data'], $account, $countAddedRecord);
 

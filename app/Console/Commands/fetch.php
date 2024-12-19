@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\API\IncomeController;
-use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\SaleController;
-use App\Http\Controllers\API\StockController;
+use App\Http\Controllers\API\ApiController;
 use App\Models\Account;
+use App\Models\ApiService;
+use App\Models\ApiToken;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
@@ -34,22 +33,33 @@ class fetch extends Command implements PromptsForMissingInput
      */
     public function handle()
     {
+        $account = search(
+            label: 'Выберите аккаунт',
+            options: fn(string $value) => strlen($value) > 0
+                ? Account::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+                : []
+        );
+        $apiService = search(
+            label: 'Выберите API сервис',
+            options: fn(string $value) => strlen($value) > 0
+                ? ApiService::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+                : []
+        );
+        $token = search(
+            label: 'Выберите токен',
+            options: fn(string $value) => strlen($value) > 0
+                ? ApiToken::getTokenByService($apiService)
+                : []
+        );
 
-        $api_options = select(
-            label: 'Выберите сервис для загрузки?',
+        $apiEndpointSelect = select(
+            label: 'Выберите эндпоинт для загрузки.',
             options: [
                 1 => 'Income',
                 2 => 'Order',
                 3 => 'Sale',
                 4 => 'Stock',
             ],
-        );
-
-        $account = search(
-            label: 'Поиск по аккаунтам',
-            options: fn(string $value) => strlen($value) > 0
-                ? Account::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
-                : []
         );
 
         $dateFrom = select(
@@ -63,16 +73,19 @@ class fetch extends Command implements PromptsForMissingInput
             ],
         );
 
-        $services = [
-            '1' => IncomeController::class,
-            '2' => OrderController::class,
-            '3' => SaleController::class,
-            '4' => StockController::class,
+        $api_endpoint = [
+            '1' => 'api/incomes',
+            '2' => 'api/orders',
+            '3' => 'api/sales',
+            '4' => 'api/stocks',
         ];
 
-        $controller = app($services[$api_options]);
-        $controller->fetchAndStore(account: $account, dateFrom: $dateFrom);
+        $apiService = ApiService::find($apiService)->value;
 
+
+
+        ApiController::fetchAndStore(account: $account, apiService: $apiService, token: $token, dateFrom: $dateFrom,
+            api_endpoint: $api_endpoint[$apiEndpointSelect]);
     }
 
     /**

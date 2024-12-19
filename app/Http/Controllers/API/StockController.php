@@ -20,7 +20,7 @@ class StockController extends Controller
         $this->stockRepository = $stockRepository;
     }
 
-    public function fetchAndStore($account, $page = 1, $countAddedRecord = 0)
+    public function fetchAndStore($account, $page = 1, $countAddedRecord = 0, $dateFrom = null)
     {
         $dateFrom = now()->format('Y-m-d');
 

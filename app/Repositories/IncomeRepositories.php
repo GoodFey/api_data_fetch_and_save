@@ -6,7 +6,7 @@ use App\Models\Income;
 
 class IncomeRepositories
 {
-    public function save(array $incomes, $account, &$countAddedRecord): void
+    public static function save(array $incomes, $account, &$countAddedRecord): void
     {
         foreach ($incomes as $income) {
             $income['account_id'] = $account;

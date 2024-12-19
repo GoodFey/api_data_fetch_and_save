@@ -4,13 +4,14 @@ namespace App\Services;
 
 class IncomeService extends ApiClient
 {
-    public function getIncomes($dateFrom, $dateTo, $page)
+    public function getIncomes($dateFrom, $dateTo, $page, $apiService, $token)
     {
 
-        return $this->get('api/incomes', [
+        return $this->get($apiService, 'api/incomes', [
             'dateFrom' => $dateFrom,
             'dateTo' => $dateTo,
-            'page' => $page
+            'page' => $page,
+            'key' => $token,
         ]);
     }
 }

@@ -12,4 +12,13 @@ class ApiToken extends Model
     protected $guarded = false;
     protected $table = 'api_tokens';
 
+    public static function getTokenByService($apiService)
+    {
+        return DB::table('api_tokens')
+            ->join('token_types', 'api_tokens.token_type_id', '=', 'token_types.id')
+            ->where('api_service_id', $apiService)
+            ->pluck('token_types.name', 'api_tokens.token_value')
+            ->all();
+    }
+
 }

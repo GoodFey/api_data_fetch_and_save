@@ -18,7 +18,7 @@ class createTokenType extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'create:token_type {name}';
+    protected $signature = 'create:token_type {name}{type}';
 
     /**
      * The console command description.
@@ -33,13 +33,14 @@ class createTokenType extends Command implements PromptsForMissingInput
     public function handle()
     {
         $name = $this->argument('name');
+        $type = $this->argument('type');
 
 
         if (TokenType::isExist($name)) {
             $this->error("Токен с именем '$name' уже существует.");
             return;
         }
-        TokenType::create(['name' => $name]);
+        TokenType::create(['name' => $name, 'type' => $type]);
 
         $this->info("Токен '$name' успешно создан.");
     }
@@ -52,7 +53,8 @@ class createTokenType extends Command implements PromptsForMissingInput
     protected function promptForMissingArgumentsUsing(): array
     {
         return [
-            'name' => 'Введите название компании!',
+            'name' => 'Введите название токена!',
+            'type' => 'Введите тип токена!',
         ];
     }
 }

@@ -18,7 +18,7 @@ class createApiService extends Command implements PromptsForMissingInput
      *
      * @var string
      */
-    protected $signature = 'create:api_service {name}';
+    protected $signature = 'create:api_service {name}{value}';
 
     /**
      * The console command description.
@@ -33,13 +33,13 @@ class createApiService extends Command implements PromptsForMissingInput
     public function handle()
     {
         $name = $this->argument('name');
-
+        $value = $this->argument('value');
 
         if (ApiService::isExist($name)) {
             $this->error("API сервис с именем '$name' уже существует.");
             return;
         }
-        ApiService::create(['name' => $name]);
+        ApiService::create(['name' => $name, 'value' => $value]);
 
         $this->info("API сервис '$name' успешно создан.");
     }
@@ -53,6 +53,7 @@ class createApiService extends Command implements PromptsForMissingInput
     {
         return [
             'name' => 'Введите имя API сервиса!',
+            'value' => 'Введите адрес API сервиса!'
         ];
     }
 }
