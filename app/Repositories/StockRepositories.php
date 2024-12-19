@@ -7,7 +7,7 @@ use App\Models\Stock;
 
 class StockRepositories
 {
-    public function save(array $data, $account, &$countAddedRecord): void
+    public static function save(array $data, $account, &$countAddedRecord): void
     {
         foreach ($data as $item) {
             $item['account_id'] = $account;

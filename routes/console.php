@@ -1,49 +1,68 @@
 <?php
 
-use App\Http\Controllers\API\IncomeController;
-use App\Http\Controllers\API\OrderController;
-use App\Http\Controllers\API\SaleController;
-use App\Http\Controllers\API\StockController;
-use App\Models\Company;
-use Illuminate\Foundation\Inspiring;
+use App\Http\Controllers\API\ApiController;
+use App\Models\Account;
+use App\Models\ApiService;
+use App\Models\ApiToken;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Contracts\Console\PromptsForMissingInput;
-
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote')->hourly();
 
 // Группа команд для получения данных по расписанию - дважды в день
 
 Artisan::command('incomes:fetch-today', function () {
-    $controller = app(IncomeController::class);
-    $todayDate = now()->format('Y-m-d');
-    $controller->fetchAndStore(dateFrom: $todayDate, account: 1);
-    Log::info("Данные для Incomes за {$todayDate} успешно сохранены!");
+    $dateFrom = now()->format('Y-m-d');
+    $account = Account::find(1)->id;
+    $apiService = ApiService::find(1);
+    $token = ApiToken::find(1)->token_value;
+    $apiService = ApiService::find(1)->value;
+    $api_endpoint = 'api/incomes';
+
+    ApiController::fetchAndStore(account: $account, apiService: $apiService, token: $token, dateFrom: $dateFrom,
+        api_endpoint: $api_endpoint);
+
+    Log::info("Данные для Incomes за {$dateFrom} успешно сохранены!");
 })->schedule()->twiceDaily(8, 16);
+
 
 Artisan::command('orders:fetch-today', function () {
-    $controller = app(OrderController::class);
-    $todayDate = now()->format('Y-m-d');
-    $controller->fetchAndStore(dateFrom: $todayDate, account: 1);
-    Log::info("Данные для Orders за {$todayDate} успешно сохранены!");
+    $dateFrom = now()->format('Y-m-d');
+    $account = Account::find(1)->id;
+    $apiService = ApiService::find(1);
+    $token = ApiToken::find(1)->token_value;
+    $apiService = ApiService::find(1)->value;
+    $api_endpoint = 'api/orders';
+
+    ApiController::fetchAndStore(account: $account, apiService: $apiService, token: $token, dateFrom: $dateFrom,
+        api_endpoint: $api_endpoint);
+
+    Log::info("Данные для orders за {$dateFrom} успешно сохранены!");
 })->schedule()->twiceDaily(8, 16);
+
 
 Artisan::command('sales:fetch-today', function () {
-    $controller = app(SaleController::class);
-    $todayDate = now()->format('Y-m-d');
-    $controller->fetchAndStore(dateFrom: $todayDate, account: 1);
-    Log::info("Данные для Sale за {$todayDate} успешно сохранены!");
+    $dateFrom = now()->format('Y-m-d');
+    $account = Account::find(1)->id;
+    $apiService = ApiService::find(1);
+    $token = ApiToken::find(1)->token_value;
+    $apiService = ApiService::find(1)->value;
+    $api_endpoint = 'api/sales';
+
+    ApiController::fetchAndStore(account: $account, apiService: $apiService, token: $token, dateFrom: $dateFrom,
+        api_endpoint: $api_endpoint);
+
+    Log::info("Данные для sales за {$dateFrom} успешно сохранены!");
 })->schedule()->twiceDaily(8, 16);
 
-Artisan::command('stock:fetch-today', function () {
-    $controller = app(StockController::class);
-    $todayDate = now()->format('Y-m-d');
-    $controller->fetchAndStore(dateFrom: $todayDate, account: 1);
-    Log::info("Данные для Stock за {$todayDate} успешно сохранены!");
+Artisan::command('stocks:fetch-today', function () {
+    $dateFrom = now()->format('Y-m-d');
+    $account = Account::find(1)->id;
+    $apiService = ApiService::find(1);
+    $token = ApiToken::find(1)->token_value;
+    $apiService = ApiService::find(1)->value;
+    $api_endpoint = 'api/stocks';
+
+    ApiController::fetchAndStore(account: $account, apiService: $apiService, token: $token, dateFrom: $dateFrom,
+        api_endpoint: $api_endpoint);
+
+    Log::info("Данные для stocks за {$dateFrom} успешно сохранены!");
 })->schedule()->twiceDaily(8, 16);
-
-
-
-
